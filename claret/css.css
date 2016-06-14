@@ -1,0 +1,154 @@
+﻿ul
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		text-align:left
+	}
+ol
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		text-align:left
+	}
+p
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		text-align:left
+	}
+.textvtablitse
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		text-align:left
+	}
+.textvtablitsepocentru
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		text-align:center
+	}
+h1
+	{
+		font-family: Georgia, serif;
+		color: #000099;
+		font-size: x-large;
+		text-align:left
+	}
+h2
+	{
+		font-family: Georgia, serif;
+		color: #FF0000;
+		font-size: medium;
+		text-align:left
+	}
+h3
+	{
+		font-family: Georgia, serif;
+		color: #FF0000;
+		font-size: medium;
+		font-style: italic;
+		text-align:left
+	}
+.footnotereference
+	{	
+		position:relative;
+		top:-0.5em;
+		font-size:0.75em;
+		line-height:0;
+		vertical-align:baseline;
+		text-decoration:none
+}
+.help
+	{
+		cursor:help;
+		border-bottom-style: dotted;
+		border-bottom-width: 1px
+	}
+body
+	{
+		margin:33px;
+		padding:0px;
+		border:none;
+		background-color:#FFFFCC
+	}
+html
+	{
+		margin:0px;
+		padding:0px;
+		border:none;
+	}
+#fullheight
+	{
+		height:100%
+	}
+.fulljustification
+	{
+		text-align:justify
+	}
+.centralize
+	{
+		text-align: center;
+	}
+.leftilize
+	{
+		text-align: left;
+	}
+.noborder
+	{
+		border-width: 0;
+	}
+.zhirnyj
+	{
+		font-weight:bold
+	}
+.comment
+	{
+		font-style:italic
+	}
+.commentred
+	{
+		font-style:italic;
+		color: #FF0000
+	}
+.red
+	{
+		color: #FF0000
+	}
+.nomer
+	{
+		font-weight:bold;
+		color:red;
+		font-size:x-large	
+	}
+.breviar
+	{
+		margin-left:33px
+	}
+#tooltip
+	{
+		background:#FFFFFF;
+		border:1px solid #000099;
+		color:#000099;
+		font:menu;
+		margin:0px;
+		padding:3px 5px;
+		position:absolute;
+		visibility:hidden
+	}
+a:link
+	{
+		color:blue
+	}
+a:visited
+	{
+		color:blue
+	}
+a:active
+	{
+		color:blue
+	}
+a:hover
+	{
+		color:red
+	}
