@@ -8,42 +8,66 @@ import pdfkit
 def urls():
     """
     Использует api hh.ru
-    Печатает только вакансии с указанным телефоном с сайта hh.ru в pdf файл по запросу "Ежедневные выплаты"
+    Печатает только вакансии с указанным телефоном с сайта hh.ru в pdf файл по запросу "Ежедневные выплаты",
+    "Промоутер", "Уборщик территорий", "Подсобный рабочий"
     """
-    url = 'https://api.hh.ru/vacancies?order_by=publication_time&specialization=3.509&specialization=29.555&specialization=29.554&specialization=29.556&specialization=29.510&specialization=29.512&specialization=29.515&specialization=29.558&specialization=29.517&specialization=29.559&specialization=29.514&specialization=29.583&specialization=29.581&specialization=29.588&specialization=29.561&specialization=29.544&specialization=29.545&specialization=29.542&specialization=29.540&specialization=29.541&specialization=29.548&specialization=29.495&schedule=fullDay&schedule=shift&schedule=flexible&schedule=flyInFlyOut&enable_snippets=true&area=1&text=%D0%B5%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B5+%D0%B2%D1%8B%D0%BF%D0%BB%D0%B0%D1%82%D1%8B&clusters=true&no_magic=true&employment=full&employment=part&employment=project&label=not_from_agency'
-    parse_data(url)
-    out_list = parse_data(url)
-    make_pdf(out_list, 7)
+    all_textes = []
+    line = '\n'+'-'*170
+    numb = 1 #порядковый номер вакансии
 
+    texts = ['%D0%B5%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B5+%D0%B2%D1%8B%D0%BF%D0%BB%D0%B0%D1%82%D1%8B',
+             '%D0%A0%D0%B0%D0%B7%D0%B4%D0%B0%D1%87%D0%B0+%D0%BB%D0%B8%D1%81%D1%82%D0%BE%D0%B2%D0%BE%D0%BA',
+             '%D0%9F%D0%BE%D1%81%D0%B0%D0%B4%D0%BA%D0%B0+%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D1%8C%D0%B5%D0%B2',
+             '+%D0%9F%D0%BE%D0%B4%D1%81%D0%BE%D0%B1%D0%BD%D1%8B%D0%B9+%D1%80%D0%B0%D0%B1%D0%BE%D1%87%D0%B8%D0%B9']
+             #ежедневные выплаты, Промоутер, Уборщик территорий, Подсобный рабочий
+    for i in texts:
+        url = 'https://api.hh.ru/vacancies?order_by=publication_time&specialization=3.509&specialization=29.555&' \
+              'specialization=29.554&specialization=29.556&specialization=29.510&specialization=29.512&' \
+              'specialization=29.515' \
+              '&specialization=29.558&specialization=29.517&specialization=29.559&specialization=29.514&' \
+              'specialization=29.583&specialization=29.581&specialization=29.588&specialization=29.561&' \
+              'specialization=29.544' \
+              '&specialization=29.545&specialization=29.542&specialization=29.540&specialization=29.541&' \
+              'specialization=29.548&specialization=29.495&schedule=fullDay&schedule=shift&schedule=flexible&' \
+              'schedule=flyInFlyOut&enable_snippets=true&area=1&text={0}&clusters=true&no_magic=true&employment=full' \
+              '&employment=part&employment=project&label=not_from_agency&experience=noExperience'.format(i)
+        out_list = parse_data(url)
+        for k in out_list:
+            order = '{0}. | '.format(numb)
+            numb += 1
+            k = order + k
+            all_textes.append(k)
+    all_textes.append(line)
+    make_pdf(all_textes, 2)
 
 def parse_data(url):
     headers = {'User-Agent': 'api-test-agent'}
     r = requests.get(url, headers=headers)
     a = r.json()["items"]
     b = len(a)
-    k = 1
-    line = '\n'+'-'*170
     out_list = []
+    limit = 9 #ограничение количества вакансий одной профессии
     for i in range(b):
-        n = a[i]
-        name = n['name']
-        url_vac = n['url']
-        employer = n['employer']['name']
-        vac = requests.get(url_vac, headers=headers).json()
-        contacts = vac["contacts"]
-        if contacts is not None:
-            phones = contacts['phones'][0]
-            country = phones['country']
-            code = phones['city']
-            number = phones['number']
-            phone = ' | Телефон:+{0}({1}){2} |'.format(country, code, number)
-            order = '{0}. | '.format(k)
-            k += 1
-            name = name.encode('utf-8')
-            employer = employer.encode('utf-8')
-            out = order + name + ' | Название компании: ' + employer + phone
-            out_list.append(out)
-    out_list.append(line)
+        if i <= limit:
+            n = a[i]
+            name = n['name']
+            url_vac = n['url']
+            employer = n['employer']['name']
+            vac = requests.get(url_vac, headers=headers).json()
+            contacts = vac["contacts"]
+            #print contacts
+            try:
+                phones = contacts['phones'][0]
+                country = phones['country']
+                code = phones['city']
+                number = phones['number']
+                phone = ' | Телефон:+{0}({1}){2} |'.format(country, code, number)
+                name = name.encode('utf-8')
+                employer = employer.encode('utf-8')
+                out = name + ' | Название компании: ' + employer + phone# + '<br>'
+                out_list.append(out)
+            except:
+                pass
     return out_list
 
 
