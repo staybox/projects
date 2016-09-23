@@ -46,7 +46,7 @@ def parse_data(url):
     a = r.json()["items"]
     b = len(a)
     out_list = []
-    limit = 9 #ограничение количества вакансий одной профессии
+    limit = 8 #ограничение количества вакансий одной профессии
     for i in range(b):
         if i <= limit:
             n = a[i]
@@ -55,16 +55,25 @@ def parse_data(url):
             employer = n['employer']['name']
             vac = requests.get(url_vac, headers=headers).json()
             contacts = vac["contacts"]
-            #print contacts
+            #print n['address']
+            #http://jsonviewer.stack.hu/
             try:
+                try:
+                    metro = n['address']['metro']['station_name']
+                    metro = metro.encode('utf-8')
+                    metro = ' | Метро: {0}'.format(metro)
+                except:
+                    metro = '' #если не указана станция метро, то ничего не печатаем
+                #print metro
                 phones = contacts['phones'][0]
                 country = phones['country']
                 code = phones['city']
                 number = phones['number']
-                phone = ' | Телефон:+{0}({1}){2} |'.format(country, code, number)
+                phone = ' | Телефон:+{0}({1}){2}'.format(country, code, number)
                 name = name.encode('utf-8')
                 employer = employer.encode('utf-8')
-                out = name + ' | Название компании: ' + employer + phone# + '<br>'
+                out = name + ' | Компания: ' + employer + phone + metro + ' |'# + '<br>'
+                #print out
                 out_list.append(out)
             except:
                 pass
