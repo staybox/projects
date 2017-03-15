@@ -109,7 +109,7 @@ if(isset($_POST['submit'])) {
         }
 
         #contact-wrapper {
-            width:900px;
+            width:950px;
             margin: 0 auto;
             border:1px solid #e2e2e2;
             background:#D9EDF7;
@@ -130,8 +130,7 @@ if(isset($_POST['submit'])) {
             border-style:solid;
             border-width:1px;
             padding:5px;
-            font-size:16px;
-            color:#333;
+            font-size:12px;
         }
         form#contactform textarea {
             font-family:Arial, Tahoma, Helvetica, sans-serif;
@@ -160,7 +159,39 @@ if(isset($_POST['submit'])) {
             background-image: -webkit-gradient(linear, left top, left bottom, from(#54b4eb), color-stop(60%, #2fa4e7), to(#1d9ce5));
         }
 
+
+
+
+        table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 20px;
+            border-left: 0;
+            padding: 5px;
+            background-color:#fff !important
+
         }
+
+        . {
+            display: none !important;
+        }
+        .pull-left {
+            float: left !important;
+        }
+        .text-left {
+            text-align:left
+        }
+        .text-right {
+            text-align:right
+        }
+        .text-center {
+            text-align:center
+        }
+        .required-col::after {
+            content: "*";
+            color: red;
+        }
+
     </style>
 </head>
 
@@ -198,7 +229,15 @@ if(isset($_POST['submit'])) {
             <label for="phone"><strong>Phone:</strong></label>
             <input type="text" size="50" name="phone" id="phone" value="" class="required" />
         </div>
+        <div>
+            <label for="city"><strong>City:</strong></label>
+            <input type="text" size="50" name="city" id="city" value="" class="required" />
+        </div>
 
+        <div>
+            <label for="country"><strong>Country:</strong></label>
+            <input type="text" size="50" name="country" id="country" value="" class="required" />
+        </div>
         <div class="panel-heading"><strong>YOUR DEMAND</strong></div>
 
         <div>
@@ -211,11 +250,143 @@ if(isset($_POST['submit'])) {
             <input type="text" size="50" name="endDate" id="endDate" value="" class="required" />
         </div>
 
-        <div>
-            <label for="message"><strong>Message:</strong></label>
+
+
+
+
+
+
+
+
+        <table class="">
+            <thead>
+            <tr>
+                <th>stay in :</th>
+                <th class="">Price for 1 night</th>
+                <th class="required-col">
+                    <span class="hidden-print">Quantity of adults</span>
+                    <span class="">Adults</span>
+                </th>
+                <th>
+                    <span class="">Quantity of children</span>
+                    <span class="">Childrens</span>
+                </th>
+                <th>
+                    <span class="">Total persons</span>
+                    <span class="">Total</span>
+                </th>
+                <th>
+                    <span class="">Price (ILS)</span>
+                    <span class="">Price ILS</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="">
+                <td>Single room</td>
+                <td class="">230 ILS /pers</td>
+                <td class="">
+                    <input id="reservation_0_adults" name="adults[0]" min="0" max="99" class="" type="number">
+                </td>
+                <td class=""></td>
+                <td class="">0</td>
+                <td class="">0,00</td>
+            </tr>
+            <tr class="reservation">
+                <td>Double room (twin or couple)</td>
+                <td class="">140 ILS /pers</td>
+                <td class="">
+                    <input id="reservation_1_adults" name="adults[1]" min="0" max="99" class="" type="number">
+                </td>
+                <td class="">
+                    <input id="reservation_1_children" name="children[1]" min="0" max="99" class="" type="number">
+
+                </td>
+                <td class="r">0</td>
+                <td class="">0,00</td>
+            </tr>
+            <tr class="reservation">
+                <td>Triple room</td>
+                <td class="hidden-print">120 ILS /pers</td>
+                <td class="reservation-adults">
+                    <input id="reservation_2_adults" name="reservation[2]" min="0" max="99" class="" type="number">
+                </td>
+                <td class="reservation-children">
+                    <input id="reservation_2_children" name="children[2]" min="0" max="99" class="" type="number">
+                </td>
+                <td class="">0</td>
+                <td class="">0,00</td>
+            </tr>
+            <tr class="reservation">
+                <td>Quadruple room</td>
+                <td class="hidden-print">120 ILS /pers</td>
+                <td class="reservation-adults">
+                    <input id="reservation_3_adults" name="adults[3]" min="0" max="99" class="" type="number">
+
+                </td>
+                <td class="reservation-children">
+                    <input id="reservation_3_children" name="children[3]" min="0" max="99" class="" type="number">
+                </td>
+                <td class="">0</td>
+                <td class="">0,00</td>
+            </tr>
+
+            <tr class="reservation">
+                <td>Meal</td>
+                <td class="hidden-print">65 ILS /pers</td>
+                <td class="reservation-adults">
+                    <input id="reservation_4_adults" name="reservation[4]" min="0" max="99" class="" type="number">
+
+                </td>
+                <td class="reservation-children">
+                    <input id="reservation_4_children" name="reservation[4][children]" min="0" max="99" class="" type="number">
+                </td>
+                <td class="">0</td>
+                <td class="">0,00</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="3">For 2 nights and more: a reduction of 10 ILS per night per person is applied</th>
+                <th class="text-right">TOTALS</th>
+                <th id="reservations-persons-total" class="text-center">0</th>
+                <th id="reservations-price-total" class="text-right">0,00</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="pull-left">
+                        (1 ILS = 0,23 EUR in january 2016)
+                    </div>
+                    <strong class="">
+                        Total ILS (breakfast included): <span id="reservation-price-total" class="">0,00</span>
+                    </strong>
+                </div>
+            </div>
+            <span><span style="color:red">*</span>required fields</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div>
+            <label for="message"><strong>More details (300 symbols max):</strong></label>
             <textarea rows="5" cols="50" name="message" id="message" class="required"></textarea>
         </div>
         <input class="btn" type="submit" value="Send Message" name="submit" />
+
     </form>
 </div>
 </body>
