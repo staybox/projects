@@ -27,8 +27,47 @@ if(isset($_POST['submit'])) {
         $emailOfSender = trim($_POST['email']);
     }
 
-    $phone = trim($_POST['phone']);
 
+    $phone = trim($_POST['phone']);
+    $city = trim($_POST['city']);
+    $country = trim($_POST['country']);
+
+
+    $price_a1 = 230; //single
+    $price_a2 = 140; //double
+    $price_a3 = 120; //triple or quadruple
+    $price_am = 65;  //meal
+
+    //discout 50% 4-6 years old
+    $price_c2_50 = $price_a2*0.5;
+    $price_c3_50 = $price_a3*0.5;
+    $price_cm_50 = $price_am*0.5;
+
+    //discout 25% 7-12 years old
+    $price_c2_25 = $price_a2*0.75;
+    $price_c3_25 = $price_a3*0.75;
+    $price_cm_25 = $price_am*0.75;
+    $price_free = 0;
+
+
+    $adults1 = intval(trim($_POST['adults1']));
+    $adults2 = intval(trim($_POST['adults2']));
+    $adults3 = intval(trim($_POST['adults3']));
+    $adults_m = intval(trim($_POST['adults_meal']));
+    $children2_50 = intval(trim($_POST['children2_50'])); // children 4-6 years old in double
+    $children3_50 = intval(trim($_POST['children3_50'])); // children 4-6 years old in triple or quadruple
+    $children_m_50 = intval(trim($_POST['children_meal_50'])); // children 4-6 years old - meal
+    $children2_25 = intval(trim($_POST['children2_25'])); // children 7-12 years old in double
+    $children3_25 = intval(trim($_POST['children3_25'])); // children 7-12 years old in triple or quadruple
+    $children_m_25 = intval(trim($_POST['children_meal_25'])); // children 7-12 years old - meal
+    $adults_sum = $adults1+$adults2+$adults3;
+    $children_sum_50 = $children2_50+$children3_50+$children_m_50; // all the children 4-6 years old. Under 4 years old we don't count
+    $children_sum_25 = $children2_25+$children3_25+$children_m_25; //all the children 7-12 years old.
+
+    $price_total_a = $adults1*$price_a1+$adults2*$price_a2+$adults3*$price_a3+$adults_m*$price_am; //sum per 1 day
+    $price_total_50 = $children2_50*$price_c2_50+$children3_50*$price_c3_50+$children_m_50*$price_cm_50; //sum per 1 day, 4-6 years old
+    $price_total_25 = $children2_25*$price_c2_25+$children3_25*$price_c3_25+$children_m_25*$price_cm_25; //sum per 1 day, 7-12 years old
+    $price_total = $price_total_a+$price_total_50+$price_total_25;
 
     //Check $startDate
     if(trim($_POST['startDate']) == '') {
@@ -60,9 +99,40 @@ if(isset($_POST['submit'])) {
         $subject = 'Reservation on '.$startDate;
         $myEmail = ''; // email address of the manager
         $myPass = '';
-        $body = "Name: $name \n\nFamily name: $FamilyName \n\nEmail: $emailOfSender \n\nPhone: $phone \n\nStart date: $startDate
-        \nEnd date: $endDate \n\n Comments:\n $comments";
+        $body = "
+        Name: $name \n
+        Family name: $FamilyName \n
+        Email: $emailOfSender \n
+        Phone: $phone \n
+        City:  $city \n
+        Country: $country \n
+        Start date: $startDate\n
+        End date: $endDate \n
+        Single (adults): $adults1 \n
+        Double (adults): $adults2 \n
+        Double (children 4-6): $children2_50  \n
+        Double (children 7-12): $children2_25  \n
+        Triple or quadruple (adults): $adults3 \n
+        Triple or quadruple (children 4-6): $children3_50 \n
+        Triple or quadruple (children 7-12): $children3_25 \n
+        Meal (adults): $adults_m \n
+        Meal (children 4-6): $children_m_50 \n
+        Meal (children 7-12): $children_m_50 \n
+        Comments:\n $comments \n\n 
+        ---------------------------------------\n
+        Adults: $adults_sum \n
+        Children 4-6 years old:$children_sum_50 \n
+        Children 7-12 years old:$children_sum_25 \n
+        Price for adults: $price_total_a \n
+        Price for children 4-6 years old: $price_total_50 \n
+        Price for children 7-12 years old: $price_total_25 \n
+        ---------------------------------------\n
+        TOTAL: \n
+        >>>Price: $price_total ILS\n
+        
+        ";
 
+        var_dump($_POST);
 
         $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
             ->setUsername($myEmail)
@@ -178,8 +248,9 @@ if(isset($_POST['submit'])) {
         .pull-left {
             float: left !important;
         }
-        .text-left {
-            text-align:left
+        #text_down div {
+            text-align:left;
+            font-size: 80%;
         }
         .text-right {
             text-align:right
@@ -191,6 +262,12 @@ if(isset($_POST['submit'])) {
             content: "*";
             color: red;
         }
+        .col-md-12{
+            position:relative;
+            min-height:1px;
+            padding-left:15px;
+            padding-right:15px;
+            text-align:right;
 
     </style>
 </head>
@@ -255,79 +332,64 @@ if(isset($_POST['submit'])) {
 
 
 
-
-
-
         <table class="">
             <thead>
             <tr>
-                <th>stay in :</th>
+                <th>Stay in :</th>
                 <th class="">Price for 1 night</th>
                 <th class="required-col">
-                    <span class="hidden-print">Quantity of adults</span>
-                    <span class="">Adults</span>
+                    <span class="">Quantity of adults</span>
                 </th>
                 <th>
-                    <span class="">Quantity of children</span>
-                    <span class="">Childrens</span>
+                    <span class="">Quantity of children(4-6)</span>
                 </th>
                 <th>
-                    <span class="">Total persons</span>
-                    <span class="">Total</span>
+                    <span class="">Quantity of children(7-12)</span>
                 </th>
                 <th>
                     <span class="">Price (ILS)</span>
-                    <span class="">Price ILS</span>
                 </th>
             </tr>
             </thead>
+
             <tbody>
             <tr class="">
                 <td>Single room</td>
                 <td class="">230 ILS /pers</td>
                 <td class="">
-                    <input id="reservation_0_adults" name="adults[0]" min="0" max="99" class="" type="number">
+                    <input id="adults1" name="adults1" min="0" max="99" class="" type="number">
                 </td>
                 <td class=""></td>
-                <td class="">0</td>
+                <td class=""></td>
                 <td class="">0,00</td>
             </tr>
             <tr class="reservation">
                 <td>Double room (twin or couple)</td>
                 <td class="">140 ILS /pers</td>
                 <td class="">
-                    <input id="reservation_1_adults" name="adults[1]" min="0" max="99" class="" type="number">
+                    <input id="adults2" name="adults2" min="0" max="99" class="" type="number">
                 </td>
                 <td class="">
-                    <input id="reservation_1_children" name="children[1]" min="0" max="99" class="" type="number">
+                    <input id="children2_50" name="children2_50" min="0" max="99" class="" type="number">
 
                 </td>
-                <td class="r">0</td>
+                <td class="">
+                    <input id="children2_25" name="children2_25" min="0" max="99" class="" type="number">
+                </td>
                 <td class="">0,00</td>
             </tr>
             <tr class="reservation">
-                <td>Triple room</td>
-                <td class="hidden-print">120 ILS /pers</td>
+                <td>Triple or quadruple room</td>
+                <td class="">120 ILS /pers</td>
                 <td class="reservation-adults">
-                    <input id="reservation_2_adults" name="reservation[2]" min="0" max="99" class="" type="number">
+                    <input id="adults3" name="adults3" min="0" max="99" class="" type="number">
                 </td>
-                <td class="reservation-children">
-                    <input id="reservation_2_children" name="children[2]" min="0" max="99" class="" type="number">
+                <td class="">
+                    <input id="children3_50" name="children3_50" min="0" max="99" class="" type="number">
                 </td>
-                <td class="">0</td>
-                <td class="">0,00</td>
-            </tr>
-            <tr class="reservation">
-                <td>Quadruple room</td>
-                <td class="hidden-print">120 ILS /pers</td>
-                <td class="reservation-adults">
-                    <input id="reservation_3_adults" name="adults[3]" min="0" max="99" class="" type="number">
-
+                <td class="">
+                    <input id="children3_25" name="children3_25" min="0" max="99" class="" type="number">
                 </td>
-                <td class="reservation-children">
-                    <input id="reservation_3_children" name="children[3]" min="0" max="99" class="" type="number">
-                </td>
-                <td class="">0</td>
                 <td class="">0,00</td>
             </tr>
 
@@ -335,46 +397,41 @@ if(isset($_POST['submit'])) {
                 <td>Meal</td>
                 <td class="hidden-print">65 ILS /pers</td>
                 <td class="reservation-adults">
-                    <input id="reservation_4_adults" name="reservation[4]" min="0" max="99" class="" type="number">
+                    <input id="adults_meal" name="adults_meal" min="0" max="99" class="" type="number">
 
                 </td>
                 <td class="reservation-children">
-                    <input id="reservation_4_children" name="reservation[4][children]" min="0" max="99" class="" type="number">
+                    <input id="children_meal_50" name="children_meal_50" min="0" max="99" class="" type="number">
                 </td>
-                <td class="">0</td>
+                <td class="">
+                    <input id="children_meal_25" name="children_meal_25" min="0" max="99" class="" type="number">
+                </td>
                 <td class="">0,00</td>
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-                <th colspan="3">For 2 nights and more: a reduction of 10 ILS per night per person is applied</th>
-                <th class="text-right">TOTALS</th>
-                <th id="reservations-persons-total" class="text-center">0</th>
-                <th id="reservations-price-total" class="text-right">0,00</th>
-            </tr>
-            </tfoot>
+
         </table>
+
         <div class="row">
+
             <div class="col-md-12">
                 <div class="">
-                    <div class="pull-left">
-                        (1 ILS = 0,23 EUR in january 2016)
-                    </div>
                     <strong class="">
-                        Total ILS (breakfast included): <span id="reservation-price-total" class="">0,00</span>
+                        Total ILS: <span id="reservation-price-total" class="">0,00</span>
                     </strong>
                 </div>
             </div>
+
+            <div id="text-down">
+            <p>Free for a children under 3 years old</p>
+            <p>Free meal for a  children under 3 years old</p>
+            <p>50% for a children 4-6 years old</p>
+            <p>50% for the meal for a children 4-6 years old</p>
+            <p>25% for a children 7-12 years old</p>
+            <p>25% for the meal for a children 7-12 years old</p>
+            </div>
+
             <span><span style="color:red">*</span>required fields</span>
-
-
-
-
-
-
-
-
-
 
 
 
