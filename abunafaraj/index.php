@@ -80,8 +80,9 @@ if(isset($_POST['submit'])) {
     if(trim($_POST['endDate']) == '') {
         $hasError = true;
     } else {
-        $endDate = trim($_POST['endDate']);
+        $endDate = (trim($_POST['endDate']));
     }
+    $nights = round((strtotime($endDate) - strtotime($startDate))/(60*60*24),0);
 
     //Check text in the message box
     if(trim($_POST['message']) == '') {
@@ -93,46 +94,64 @@ if(isset($_POST['submit'])) {
             $comments = trim($_POST['message']);
         }
     }
-
+    $html_in_email_1 = '<html><body>';
+    $html_in_email_2 = '</html></body>';
+    $br = '<br>';
+    $table1 = "<table width=\"100%\"><tr><td>";
+    $table2 = "</table>";
+    $tr1 = "<tr>";
+    $tr2 = "</tr>";
+    $td1 = "<td>";
+    $td2 = "</td>";
     //If there are no errors - send an email.
     if(!isset($hasError)) {
         $subject = 'Reservation on '.$startDate;
         $myEmail = ''; // email address of the manager
         $myPass = '';
         $body = "
-        Name: $name \n
-        Family name: $FamilyName \n
-        Email: $emailOfSender \n
-        Phone: $phone \n
-        City:  $city \n
-        Country: $country \n
-        Start date: $startDate\n
-        End date: $endDate \n
-        Single (adults): $adults1 \n
-        Double (adults): $adults2 \n
-        Double (children 4-6): $children2_50  \n
-        Double (children 7-12): $children2_25  \n
-        Triple or quadruple (adults): $adults3 \n
-        Triple or quadruple (children 4-6): $children3_50 \n
-        Triple or quadruple (children 7-12): $children3_25 \n
-        Meal (adults): $adults_m \n
-        Meal (children 4-6): $children_m_50 \n
-        Meal (children 7-12): $children_m_50 \n
-        Comments:\n $comments \n\n 
-        ---------------------------------------\n
-        Adults: $adults_sum \n
-        Children 4-6 years old:$children_sum_50 \n
-        Children 7-12 years old:$children_sum_25 \n
-        Price for adults: $price_total_a \n
-        Price for children 4-6 years old: $price_total_50 \n
-        Price for children 7-12 years old: $price_total_25 \n
-        ---------------------------------------\n
-        TOTAL: \n
-        >>>Price: $price_total ILS\n
+        $html_in_email_1
+        IDENTIFICATION $br
+        $table1 $tr1 $td1
+        Name: $name $br
+        Family name: $FamilyName $br
+        Email: $emailOfSender $br
+        $td2 $td1
+        Phone: $phone  $br
+        City:  $city  $br
+        Country: $country $br
+        $td2 $tr2 $table2
+        YOUR DEMAND $br
+        $table1 $tr1 $td1
+        Start date: $startDate $br
+        End date: $endDate $br
+        Nights: $nights $br
+        $td2 $tr2 $table2
+        Single (adults): $adults1 
+        Double (adults): $adults2 
+        Double (children 4-6): $children2_50  
+        Double (children 7-12): $children2_25  
+        Triple or quadruple (adults): $adults3 
+        Triple or quadruple (children 4-6): $children3_50 
+        Triple or quadruple (children 7-12): $children3_25 
+        Meal (adults): $adults_m 
+        Meal (children 4-6): $children_m_50 
+        Meal (children 7-12): $children_m_50 
+        Comments: $comments  
+        ---------------------------------------
+        Adults: $adults_sum 
+        Children 4-6 years old:$children_sum_50 
+        Children 7-12 years old:$children_sum_25 
+        Price for adults: $price_total_a 
+        Price for children 4-6 years old: $price_total_50 
+        Price for children 7-12 years old: $price_total_25 
+        ---------------------------------------
+        TOTAL: 
+        >>>Price: $price_total ILS
         
+        $html_in_email_2
         ";
 
-        var_dump($_POST);
+        //var_dump($_POST);
 
         $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
             ->setUsername($myEmail)
@@ -143,7 +162,9 @@ if(isset($_POST['submit'])) {
         $message = Swift_Message::newInstance($subject)
             ->setFrom(array($myEmail => 'INFO'))
             ->setTo(array($myEmail))
+            ->setContentType('text/html')
             ->setBody($body);
+
 
         $result = $mailer->send($message);
 
@@ -156,10 +177,29 @@ if(isset($_POST['submit'])) {
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
+    <meta charset="utf-8">
     <title>Abuna Faraj pilgrim house</title>
+
+    <!-- datepicker -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Datepicker - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker1" ).datepicker();
+            $( "#datepicker2" ).datepicker();
+        } );
+    </script>
+
+
+
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
 
@@ -200,8 +240,9 @@ if(isset($_POST['submit'])) {
             border-style:solid;
             border-width:1px;
             padding:5px;
-            font-size:12px;
+            font-size:14px;
         }
+
         form#contactform textarea {
             font-family:Arial, Tahoma, Helvetica, sans-serif;
             font-size:100%;
@@ -220,16 +261,12 @@ if(isset($_POST['submit'])) {
             color: #ffffff;
         }
         .btn {
-
             color: #ffffff;
             padding: 8px 12px;
-            font-size: 14px;
             border-radius: 4px;
             cursor: pointer;
             background-image: -webkit-gradient(linear, left top, left bottom, from(#54b4eb), color-stop(60%, #2fa4e7), to(#1d9ce5));
         }
-
-
 
 
         table {
@@ -242,22 +279,14 @@ if(isset($_POST['submit'])) {
 
         }
 
-        . {
-            display: none !important;
-        }
-        .pull-left {
-            float: left !important;
-        }
         #text_down div {
             text-align:left;
-            font-size: 80%;
         }
-        .text-right {
-            text-align:right
+
+        .text-10 {
+            font-size: 12px;
         }
-        .text-center {
-            text-align:center
-        }
+
         .required-col::after {
             content: "*";
             color: red;
@@ -286,8 +315,11 @@ if(isset($_POST['submit'])) {
     <?php } ?>
 
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="contactform">
+
         <div class="panel-heading"><strong>IDENTIFICATION</strong></div>
-        <div>
+        <table width="100%">
+            <tr><td>
+                <div>
             <label for="name"><strong>Name:</strong></label>
             <input type="text" size="50" name="contactname" id="contactname" value="" class="required" />
         </div>
@@ -301,8 +333,9 @@ if(isset($_POST['submit'])) {
             <label for="email"><strong>Email:</strong></label>
             <input type="text" size="50" name="email" id="email" value="" class="required email" />
         </div>
-
-        <div>
+        </td>
+        <td>
+        <div class="">
             <label for="phone"><strong>Phone:</strong></label>
             <input type="text" size="50" name="phone" id="phone" value="" class="required" />
         </div>
@@ -315,19 +348,27 @@ if(isset($_POST['submit'])) {
             <label for="country"><strong>Country:</strong></label>
             <input type="text" size="50" name="country" id="country" value="" class="required" />
         </div>
-        <div class="panel-heading"><strong>YOUR DEMAND</strong></div>
+        </td>
+        </tr>
+        </table>
 
+        <div class="panel-heading"><strong>YOUR DEMAND</strong></div>
+        <table width="100%">
+            <tr><td>
         <div>
             <label for="startDate"><strong>Start date:</strong></label>
-            <input type="text" size="50" name="startDate" id="startDate" value="" class="required" />
+            <input type="text" size="50" name="startDate" id="datepicker1" value="" class="required" />
         </div>
+                </td>
 
+            <td>
         <div>
             <label for="endDate"><strong>End date:</strong></label>
-            <input type="text" size="50" name="endDate" id="endDate" value="" class="required" />
+            <input type="text" size="50" name="endDate" id="datepicker2" value="" class="required" />
         </div>
-
-
+                </td>
+            </tr>
+        </table>
 
 
 
@@ -422,29 +463,32 @@ if(isset($_POST['submit'])) {
                 </div>
             </div>
 
-            <div id="text-down">
-            <p>Free for a children under 3 years old</p>
-            <p>Free meal for a  children under 3 years old</p>
-            <p>50% for a children 4-6 years old</p>
-            <p>50% for the meal for a children 4-6 years old</p>
-            <p>25% for a children 7-12 years old</p>
-            <p>25% for the meal for a children 7-12 years old</p>
-            </div>
-
-            <span><span style="color:red">*</span>required fields</span>
-
-
-
-
-
 
             <div>
             <label for="message"><strong>More details (300 symbols max):</strong></label>
             <textarea rows="5" cols="50" name="message" id="message" class="required"></textarea>
         </div>
-        <input class="btn" type="submit" value="Send Message" name="submit" />
 
+    <span><span style="color:red">*</span>required fields</span>
+
+            <div class="text-10" id="text-down">
+                <p>Free for a children under 3 years old</p>
+                <p>Free meal for a  children under 3 years old</p>
+                <p>50% for a children 4-6 years old</p>
+                <p>50% for the meal for a children 4-6 years old</p>
+                <p>25% for a children 7-12 years old</p>
+                <p>25% for the meal for a children 7-12 years old</p>
+            </div>
+
+
+
+    <input class="btn" type="submit" value="Send Message" name="submit" />
     </form>
 </div>
 </body>
 </html>
+
+<!--
+// TODO
+// HTML in email
+// JS for calc the total on page
