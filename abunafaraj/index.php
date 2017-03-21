@@ -33,6 +33,36 @@ if(isset($_POST['submit'])) {
     $country = trim($_POST['country']);
 
 
+
+
+
+    //Check $startDate
+    if(trim($_POST['startDate']) == '') {
+        $hasError = true;
+    } else {
+        $startDate = trim($_POST['startDate']);
+    }
+
+    //Check $endDate
+    if(trim($_POST['endDate']) == '') {
+        $hasError = true;
+    } else {
+        $endDate = (trim($_POST['endDate']));
+    }
+    $nights = round((strtotime($endDate) - strtotime($startDate))/(60*60*24),0);
+
+    //Check text in the message box
+    if(trim($_POST['message']) == '') {
+        $hasError = true;
+    } else {
+        if(function_exists('stripslashes')) {
+            $comments = stripslashes(trim($_POST['message']));
+        } else {
+            $comments = trim($_POST['message']);
+        }
+    }
+
+
     $price_a1 = 230; //single
     $price_a2 = 140; //double
     $price_a3 = 120; //triple or quadruple
@@ -60,49 +90,32 @@ if(isset($_POST['submit'])) {
     $children2_25 = intval(trim($_POST['children2_25'])); // children 7-12 years old in double
     $children3_25 = intval(trim($_POST['children3_25'])); // children 7-12 years old in triple or quadruple
     $children_m_25 = intval(trim($_POST['children_meal_25'])); // children 7-12 years old - meal
-    $adults_sum = $adults1+$adults2+$adults3;
-    $children_sum_50 = $children2_50+$children3_50+$children_m_50; // all the children 4-6 years old. Under 4 years old we don't count
-    $children_sum_25 = $children2_25+$children3_25+$children_m_25; //all the children 7-12 years old.
+    $price_single = $price_a1 * $adults1*$nights;
+    $price_double = ($price_a2*$adults2 + $price_c2_50*$children2_50+$price_c2_25*$children2_25)*$nights;
+    $price_triple = ($price_a3*$adults3 + $price_c3_50*$children3_50+$price_c3_25*$children3_25)*$nights;
+    $price_meal = ($price_am*$adults_m + $price_cm_50*$children_m_50+$price_cm_25*$children_m_25)*$nights;
 
-    $price_total_a = $adults1*$price_a1+$adults2*$price_a2+$adults3*$price_a3+$adults_m*$price_am; //sum per 1 day
-    $price_total_50 = $children2_50*$price_c2_50+$children3_50*$price_c3_50+$children_m_50*$price_cm_50; //sum per 1 day, 4-6 years old
-    $price_total_25 = $children2_25*$price_c2_25+$children3_25*$price_c3_25+$children_m_25*$price_cm_25; //sum per 1 day, 7-12 years old
-    $price_total = $price_total_a+$price_total_50+$price_total_25;
+    $price_total = $price_single+$price_double+$price_triple+$price_meal;
 
-    //Check $startDate
-    if(trim($_POST['startDate']) == '') {
-        $hasError = true;
-    } else {
-        $startDate = trim($_POST['startDate']);
-    }
 
-    //Check $endDate
-    if(trim($_POST['endDate']) == '') {
-        $hasError = true;
-    } else {
-        $endDate = (trim($_POST['endDate']));
-    }
-    $nights = round((strtotime($endDate) - strtotime($startDate))/(60*60*24),0);
-
-    //Check text in the message box
-    if(trim($_POST['message']) == '') {
-        $hasError = true;
-    } else {
-        if(function_exists('stripslashes')) {
-            $comments = stripslashes(trim($_POST['message']));
-        } else {
-            $comments = trim($_POST['message']);
-        }
-    }
     $html_in_email_1 = '<html><body>';
     $html_in_email_2 = '</html></body>';
     $br = '<br>';
-    $table1 = "<table width=\"100%\"><tr><td>";
+    $table1 = "<table width=\"80%\"><tr><td>";
     $table2 = "</table>";
     $tr1 = "<tr>";
     $tr2 = "</tr>";
     $td1 = "<td>";
     $td2 = "</td>";
+    $p1 = "<p>";
+    $p2 = "</p>";
+    $th1 = "<th>";
+    $th2 = "</th>";
+    $thead1 = "<thead>";
+    $thead2 = "</thead>";
+    $tbody1 = "<tbody>";
+    $tbody2 = "</tbody>";
+
     //If there are no errors - send an email.
     if(!isset($hasError)) {
         $subject = 'Reservation on '.$startDate;
@@ -122,32 +135,57 @@ if(isset($_POST['submit'])) {
         $td2 $tr2 $table2
         YOUR DEMAND $br
         $table1 $tr1 $td1
-        Start date: $startDate $br
+        Start date: $startDate $br 
+        Nights: $nights $td2
         End date: $endDate $br
-        Nights: $nights $br
-        $td2 $tr2 $table2
-        Single (adults): $adults1 
-        Double (adults): $adults2 
-        Double (children 4-6): $children2_50  
-        Double (children 7-12): $children2_25  
-        Triple or quadruple (adults): $adults3 
-        Triple or quadruple (children 4-6): $children3_50 
-        Triple or quadruple (children 7-12): $children3_25 
-        Meal (adults): $adults_m 
-        Meal (children 4-6): $children_m_50 
-        Meal (children 7-12): $children_m_50 
-        Comments: $comments  
-        ---------------------------------------
-        Adults: $adults_sum 
-        Children 4-6 years old:$children_sum_50 
-        Children 7-12 years old:$children_sum_25 
-        Price for adults: $price_total_a 
-        Price for children 4-6 years old: $price_total_50 
-        Price for children 7-12 years old: $price_total_25 
-        ---------------------------------------
-        TOTAL: 
-        >>>Price: $price_total ILS
         
+        $td2 $tr2 $table2
+
+$table1 $thead1 $tr1 
+$th1 Stay in :$th2
+$th1 Price for 1 night$th2
+$th1 Quantity of adults
+$th2 $th1 Quantity of children(4-6)
+$th2 $th1 Quantity of children(7-12)
+$th2 $th1 Price (ILS) $th2
+
+$tr2 $thead2 $tbody1 $tr1 $td1 Single room $td2
+$td1 230 ILS /pers $td2 $td1 $adults1
+$td2 $td1 $td2 $td1 $td2
+$td1 $price_single $td2 $tr2 $tr1 
+
+$td1 Double room (twin or couple) $td2
+$td1 140 ILS /pers $td2
+$td1 $adults2 $td2 $td1 $children2_50
+$td2 $td1 $children2_25
+$td2 $td1 $price_double $td2
+
+$tr2 $tr1 $td1 Triple or quadruple room $td2
+$td1 120 ILS /pers $td2
+$td1 $adults3 $td2
+$td1 $children3_50
+$td2 $td1 $children3_25
+$td2 $td1 $price_triple $td2
+$tr2 $tr1
+
+$td1 Meal $td2
+$td1 65 ILS /pers $td2
+$td1 $adults_m
+$td2 $td1 $children_m_50
+$td2 $td1 $children_m_25
+$td2 $td1 $price_meal $td2 $tr2
+$tbody2 $table2
+
+$p1 Comments: $br $comments $p2
+$p1 TOTAL Price: $price_total ILS $p2 
+        $p1
+        Free for a children under 3 years old$br
+        Free meal for a  children under 3 years old$br
+        50% for a children 4-6 years old$br
+        50% for the meal for a children 4-6 years old$br
+        25% for a children 7-12 years old$br
+        25% for the meal for a children 7-12 years old
+        $p2
         $html_in_email_2
         ";
 
@@ -370,9 +408,6 @@ if(isset($_POST['submit'])) {
             </tr>
         </table>
 
-
-
-
         <table class="">
             <thead>
             <tr>
@@ -479,7 +514,7 @@ if(isset($_POST['submit'])) {
                 <p>25% for a children 7-12 years old</p>
                 <p>25% for the meal for a children 7-12 years old</p>
             </div>
-
+<br>
 
 
     <input class="btn" type="submit" value="Send Message" name="submit" />
