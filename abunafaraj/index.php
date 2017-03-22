@@ -34,8 +34,6 @@ if(isset($_POST['submit'])) {
 
 
 
-
-
     //Check $startDate
     if(trim($_POST['startDate']) == '') {
         $hasError = true;
@@ -231,8 +229,8 @@ $p1 TOTAL Price: $price_total ILS $p2
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $( function() {
-            $( "#datepicker1" ).datepicker();
-            $( "#datepicker2" ).datepicker();
+            $( "#datepicker1" ).datepicker({ dateFormat: 'dd-mm-yy' });
+            $( "#datepicker2" ).datepicker({ dateFormat: 'dd-mm-yy' });
         } );
     </script>
 
@@ -358,32 +356,32 @@ $p1 TOTAL Price: $price_total ILS $p2
         <table width="100%">
             <tr><td>
                 <div>
-            <label for="name"><strong>Name:</strong></label>
+            <label for="name" class="required-col"><strong>First name</strong> </label>
             <input type="text" size="50" name="contactname" id="contactname" value="" class="required" />
         </div>
 
         <div>
-            <label for="FamilyName"><strong>Family name:</strong></label>
+            <label for="FamilyName" class="required-col"><strong>Family name</strong></label>
             <input type="text" size="50" name="FamilyName" id="FamilyName" value="" class="required" />
         </div>
 
         <div>
-            <label for="email"><strong>Email:</strong></label>
+            <label for="email" class="required-col"><strong>Email</strong></label>
             <input type="text" size="50" name="email" id="email" value="" class="required email" />
         </div>
         </td>
         <td>
         <div class="">
-            <label for="phone"><strong>Phone:</strong></label>
+            <label for="phone" class="required-col"><strong>Phone</strong></label>
             <input type="text" size="50" name="phone" id="phone" value="" class="required" />
         </div>
         <div>
-            <label for="city"><strong>City:</strong></label>
+            <label for="city" class="required-col"><strong>City</strong></label>
             <input type="text" size="50" name="city" id="city" value="" class="required" />
         </div>
 
         <div>
-            <label for="country"><strong>Country:</strong></label>
+            <label for="country" class="required-col"><strong>Country</strong></label>
             <input type="text" size="50" name="country" id="country" value="" class="required" />
         </div>
         </td>
@@ -394,18 +392,22 @@ $p1 TOTAL Price: $price_total ILS $p2
         <table width="100%">
             <tr><td>
         <div>
-            <label for="startDate"><strong>Start date:</strong></label>
+            <label for="startDate" class="required-col"><strong>Start date:</strong></label>
             <input type="text" size="50" name="startDate" id="datepicker1" value="" class="required" />
-        </div>
-                </td>
+        </div></td>
 
             <td>
         <div>
-            <label for="endDate"><strong>End date:</strong></label>
+            <label for="endDate" class="required-col"><strong>End date:</strong></label>
             <input type="text" size="50" name="endDate" id="datepicker2" value="" class="required" />
         </div>
                 </td>
             </tr>
+            <td>
+                <div>
+                    <a> <strong>Nights:</strong></a>
+                </div>
+            </td>
         </table>
 
         <table class="">
