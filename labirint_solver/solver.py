@@ -60,14 +60,20 @@ a = config.get('1', 'a') # take labirint number 1
 
 lab_list = ast.literal_eval(a) # make list from string
 
-start = lab_list[1][1] #start position
+start = lab_list[1][1] #start position #<type 'list'>
+
 cur_pos = start # current position
 finish = lab_list[10][10] #final position
 
-P = (10, 10)
+P = (10, 10) # coordinate of current position
+n = neighbours(P) # <type 'list'>
+print(n) # coordinates of the neighbors
 
-print(neighbours(P))
-
+for i in n:
+    x = i[0]
+    y = i[1]
+    print lab_list[x][y]
+    
 
 if __name__ == '__main__':
     solve_it()
