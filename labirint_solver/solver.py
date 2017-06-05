@@ -1,24 +1,18 @@
 # coding: utf8
 import ConfigParser
 import ast
-from itertools import product
-import itertools
 
 
-def go(lab_values, i, j):
-    if i < 4 and j < 4:
-        if lab_values[i][j+1] == 0 or lab_values[i][j+1] == 7: #right
-            print '>'
-            return i, j+1
-        elif lab_values[i+1][j] == 0 or lab_values[i+1][j] == 7: #down
-            print 'v'
-            return i+1, j
-        elif lab_values[i][j-1] == 0 or lab_values[i][j-1] == 7: #left
-            print '<'
-            return i, j-1
-        elif lab_values[i-1][j] == 0 or lab_values[i-1][j] == 7: #up
-            print '^'
-            return i-1, j
+def go(lab_values, i, j, prev_direction):
+    if i < len(lab_values)-1 and j < len(lab_values[i])-1:
+        if lab_values[i][j+1] == 0 or lab_values[i][j+1] == 7 and prev_direction != '<': #right
+            return i, j+1, '>'
+        elif lab_values[i+1][j] == 0 or lab_values[i+1][j] == 7 and prev_direction != '^': #down
+            return i+1, j, 'v'
+        elif lab_values[i][j-1] == 0 or lab_values[i][j-1] == 7 and prev_direction != '>': #left
+            return i, j-1, '<'
+        elif lab_values[i-1][j] == 0 or lab_values[i-1][j] == 7 and prev_direction != 'v': #up
+            return i-1, j, '^'
         else:
             return False
     else:
@@ -32,10 +26,11 @@ def check_bad_cells(lab_values):
         i = 1
         while i < len(lab_values)-1: # number of string
             k = lab_values[i]
-            j = 1
+            j = 2
             while j < len(k)-1: # number of rows
                 P = lab_values[i][j]
                 if P == 0:
+                    # find dead one end
                     l = lab_values[i][j - 1]
                     r = lab_values[i][j + 1]
                     u = lab_values[i - 1][j]
@@ -43,6 +38,13 @@ def check_bad_cells(lab_values):
                     summ = l+r+u+d
                     if summ ==3:
                         lab_values[i][j] = 1
+                    # find dead one couple
+                    if i < len(lab_values)-2 and j< len(k)-2:
+                        ld = lab_values[i+1][j - 1]
+                        dd = lab_values[i+2][j]
+                        summ2 = u+l+ld+dd
+                        if d ==0 and summ2 == 4:
+                            lab_values[i][j] = 1
                 j += 1
             i += 1
         counter += 1
@@ -61,20 +63,23 @@ def solve_it():
 configFilePath = 'input.ini'
 config = ConfigParser.ConfigParser()
 config.read(configFilePath)
-a = config.get('1', 'b')  # take labirint number 1
+a = config.get('1', 'c')  # take labirint number 1
 
 lab_values = ast.literal_eval(a)  # make list from string
 
-start = 5
 finish = 7
-cur_pos = start
+cur_pos = 0
 
 lab_values_checked = check_bad_cells(lab_values)
 i = 1
 j = 1
+way = []
+prev_direction = '>'
 while cur_pos != finish:
-    i,j = go(lab_values, i, j)
+    i,j, direction = go(lab_values, i, j, prev_direction)
     cur_pos = lab_values[i][j]
+    way.append(direction)
+print way
 
 
 if __name__ == '__main__':
