@@ -1,17 +1,33 @@
 # coding: utf8
 import ConfigParser
 import ast
+import locale
+
+def print_lab(lab_values):
+    for i in lab_values:
+        b = []
+        for j in i:
+            if j == 1:
+                j='\xe2\x96\xa0'#''■'
+            if j == 0:
+                j='\xe2\x96\xa1' #'□'
+            if j == 7:
+                j='\xe2\x96\xa1' #'□'
+            b.append(j)
+            #print (j)
+        print locale.getlocale()
+        print b
 
 
 def go(lab_values, i, j, prev_direction):
     if i < len(lab_values)-1 and j < len(lab_values[i])-1:
-        if lab_values[i][j+1] == 0 or lab_values[i][j+1] == 7 and prev_direction != '<': #right
+        if lab_values[i][j+1] != 1 and prev_direction != '<': #right
             return i, j+1, '>'
-        elif lab_values[i+1][j] == 0 or lab_values[i+1][j] == 7 and prev_direction != '^': #down
+        elif (lab_values[i+1][j] != 1) and prev_direction != '^': #down
             return i+1, j, 'v'
-        elif lab_values[i][j-1] == 0 or lab_values[i][j-1] == 7 and prev_direction != '>': #left
+        elif lab_values[i][j-1] != 1 and prev_direction != '>': #left
             return i, j-1, '<'
-        elif lab_values[i-1][j] == 0 or lab_values[i-1][j] == 7 and prev_direction != 'v': #up
+        elif lab_values[i-1][j] != 1 and prev_direction != 'v': #up
             return i-1, j, '^'
         else:
             return False
@@ -20,7 +36,6 @@ def go(lab_values, i, j, prev_direction):
 
 
 def check_bad_cells(lab_values):
-    print lab_values
     counter = 0
     while counter < 100:
         i = 1
@@ -48,11 +63,7 @@ def check_bad_cells(lab_values):
                 j += 1
             i += 1
         counter += 1
-    print lab_values
     return lab_values
-
-# далее найти все перекрёстки
-# рандомно выбирая направление пути из 4х идти куда-либо, если дойти до финиша, то запомнить путь
 
 def solve_it():
     """
@@ -63,13 +74,13 @@ def solve_it():
 configFilePath = 'input.ini'
 config = ConfigParser.ConfigParser()
 config.read(configFilePath)
-a = config.get('1', 'c')  # take labirint number 1
+a = config.get('1', 'a')  # take labirint number 1
 
 lab_values = ast.literal_eval(a)  # make list from string
 
 finish = 7
 cur_pos = 0
-
+#print_lab(lab_values)
 lab_values_checked = check_bad_cells(lab_values)
 i = 1
 j = 1
@@ -78,6 +89,7 @@ prev_direction = '>'
 while cur_pos != finish:
     i,j, direction = go(lab_values, i, j, prev_direction)
     cur_pos = lab_values[i][j]
+    prev_direction = direction
     way.append(direction)
 print way
 
