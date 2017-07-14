@@ -1,0 +1,33 @@
+Video should be without sound. If it is, you can remove the sound:
+ffmpeg -i FOI_YY_MM.mp4 -c:v copy -an FOI_YY_MM_removed_sound.mp4 -y; rm FOI_YY_MM.mp4; mv FOI_YY_MM_removed_sound.mp4 FOI_YY_MM
+.mp4
+
+Check free space
+du -h /home/netforgod/export/
+
+Run the process independently
+screen doit --dir /home/netforgod/export/
+ctrl+a
+d
+screen -ls
+screen -x 1557.pts-0.f55-srv-vm-nfg-saul5
+
+cd /home/netforgod/
+sudo apt-get update
+apt-get install git htop lftp python-pip ffmpeg
+pip install 'doit==0.29'
+
+For cron
+#doit script every 2 minutes
+*/2 * * * * flock -n /tmp/flock.lock -c 'doit -f /home/netforgod/NFGMovieConverter/dodo.py --dir /home/netforgod/export/' >> /dev/null 2>&1
+#syncronization with Jonas disk every 3 minutes
+*/3 * * * * flock -n /tmp/flock.lock -c 'python /home/netforgod/NFGMovieConverter/jonas_sync.py' >> /dev/null 2>&1
+#delete all the files older than 65 days and empty folders at 5:00 every day
+0 5 * * * find /home/netforgod/export/ -type f -mtime +65 -print0 | xargs -0 rm -f; find /home/netforgod/export/ -type d -empty -exec rmdir {} \;
+
+#youtube
+pip install --upgrade google-api-python-client
+https://console.developers.google.com/projectselector/apis/credentials
+create a project
+activate 'YouTube Data API v3'
+from 'OAuth 2.0 client IDs' copy the data (client_id, client_secret) and create 'client_secrets.json' file locally.

@@ -1,0 +1,8 @@
+.idea/**
+*.pyc
+*.doit.db
+*.log
+*.mbtree
+*.avi
+*.mp3
+*.json

@@ -1,0 +1,20 @@
+Saul5
+The folder hierarchy for example for english and french should be like this:
+
+FOI_16_05/
+├── FOI_16_05.mp4
+├── parameters.ini
+├── sons
+│   ├── EN.wav
+│   └── FR.wav
+└── textes
+    ├── resume_EN.txt
+    └── resume_FR.txt
+
+The folder with a video and a main .mp4 file should have a names like FOI_YY_MM (year and month).
+In the resume_LL.txt (any resume file) there are the 1st line for the title for youtube and other lines are for description.
+If the language is 'JA' the program will takes resume_EN.txt
+If the language is 'RN', 'MU' or 'MG' the program will takes resume_FR.txt
+
+YouTube
+The program will upload the FHD films of the current month (program checks the name of the folder) to youtube account NFG. It will upload the video after every change. It means that if we will change the video, program will upload this second time, and you will need to delete duplicates from youtube manually. 
