@@ -24,5 +24,5 @@ def fun(a):
 
 
 if __name__ == '__main__':
-    a = 'Hello World!!@#$%^&**(*(***'
+    a = 'AAaooo!!!!'
     print (fun(a))
