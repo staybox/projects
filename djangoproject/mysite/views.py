@@ -8,5 +8,5 @@ def index(request):
 
 
 def pdf(request):
-    my_file = open('/home/allexeyv/projects/djangoproject/mysite/job.pdf','rb').read()
+    my_file = open('/home/allexeyv/projects/hh.ru/job.pdf','rb').read()
     return HttpResponse(my_file, content_type = "application/pdf")
