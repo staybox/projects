@@ -92,8 +92,8 @@ def make_pdf(out_list, n):
         f.write('<br>')
     f.write(tags_2)
     f.close()
-    pdfkit.from_file('job.html', 'job.pdf')
-    os.remove('job.html')
+    #pdfkit.from_file('job.html', 'job.pdf')
+    #os.remove('job.html')
 
 
 if __name__ == '__main__':
