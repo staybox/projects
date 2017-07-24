@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index, name='index'),
-    url(r'^job.pdf$', views.pdf, name='pdf'),
+    url(r'^job.html', views.vac_list, name='html'),
 ]

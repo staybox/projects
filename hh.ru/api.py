@@ -12,7 +12,7 @@ def urls():
     "Промоутер", "Уборщик территорий", "Подсобный рабочий"
     """
     all_textes = []
-    line = '\n'+'-'*170
+    line = '\n'+'-'*100
     numb = 1 #порядковый номер вакансии
 
     texts = ['%D0%B5%D0%B6%D0%B5%D0%B4%D0%BD%D0%B5%D0%B2%D0%BD%D1%8B%D0%B5+%D0%B2%D1%8B%D0%BF%D0%BB%D0%B0%D1%82%D1%8B',
@@ -38,7 +38,7 @@ def urls():
             k = order + k
             all_textes.append(k)
     all_textes.append(line)
-    make_pdf(all_textes, 2)
+    make_pdf(all_textes, 1) # 1 = print only once on a list
 
 
 def parse_data(url):
@@ -47,7 +47,7 @@ def parse_data(url):
     a = r.json()["items"]
     b = len(a)
     out_list = []
-    limit = 8 #ограничение количества вакансий одной профессии
+    limit = 10 #ограничение количества вакансий одной профессии
     for i in range(b):
         if i <= limit:
             n = a[i]
