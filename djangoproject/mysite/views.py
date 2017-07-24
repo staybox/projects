@@ -8,5 +8,5 @@ def index(request):
 
 
 def vac_list(request):
-    my_file = open('/home/ccninfo/Documents/projects/hh.ru/job.html','rb').read()
+    my_file = open('/home/allexeyv/projects/hh.ru/job.html','rb').read()
     return HttpResponse(my_file, content_type = "text/html")
