@@ -92,6 +92,7 @@ def make_pdf(out_list, n):
         f.write('<br>')
     f.write(tags_2)
     f.close()
+    print ('api.py finished the parsing')
     #pdfkit.from_file('job.html', 'job.pdf')
     #os.remove('job.html')
 
