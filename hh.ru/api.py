@@ -82,7 +82,8 @@ def parse_data(url):
 
 
 def make_pdf(out_list, n):
-    f = open('job.html', 'w')
+    f = open('/home/allexeyv/projects/hh.ru/job.html', 'w')
+    #f = open('/home/ccninfo/Documents/projects/hh.ru/job.html', 'w')
     tags_1 = '<!DOCTYPE html><html><head><meta charset="utf-8"><h1>ВАКАНСИИ</h1></head><body>'
     tags_2 = '</body></html>'
     f.write(tags_1)
