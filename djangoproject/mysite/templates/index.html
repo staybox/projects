@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/mysite.css' %}">
+</head>
+<body>
+
+{% for i in titles %}
+    <h1><a href='{{i}}'>{{i}}</a></h1>
+{% endfor %}
+
+</body>
+</html>

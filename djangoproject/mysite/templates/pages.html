@@ -1,0 +1,33 @@
+{% load staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/mysite.css' %}">
+</head>
+
+<body>
+<h1><a href="/">BACK</a></h1>
+{% if titles == 'Basilica' %}
+<h1>Basilica</h1>
+The Church of the Annunciation, sometimes also referred to as the Basilica of the Annunciation is a church in Nazareth, in northern Israel.
+The church was established at the site where, according to Roman Catholic tradition, the Annunciation took place.
+Greek Orthodox tradition holds that this event occurred while Mary was drawing water from a local spring in Nazareth, and the Greek Orthodox Church of the Annunciation was erected at that alternate site.
+{% endif %}
+
+{% if titles == 'CIMDN' %}
+<h1>International Center Mary of Nazareth</h1>
+Space for dialogue and discovery of the salvation history through Mary of Nazareth.
+With Mary, let you through the Scriptures - Multimedia show 1h Biblique history - Room with deepening videos, video Marie as a Jewish woman,
+Mary in the Quran, The Eastern Churches - Landscaped Gardens - Chapel with icons - Meeting Places - Cafeteria - Shop
+{% endif %}
+
+{% if titles == 'Nazareth_village' %}
+<h1>Nazareth village</h1>
+A first-century farm and village presenting the life, times and teachings of Jesus of Nazareth for all the world.
+Two thousand years after the birth of Jesus, Nazareth Village opened its doors to visitors.
+Nazareth Village is located on a site that was remarkably untouched and unchanged since Jesus time. In fact,
+Nazareth Village preserves the last remaining fields worked by Jesus’ friends, family and fellow villagers.
+{% endif %}
+
+
+</body>
+</html>

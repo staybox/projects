@@ -1,13 +1,15 @@
 # coding: utf8
+from django.shortcuts import render
 from django.http import HttpResponse
 
 
 def index(request):
-    out = '<a href="job.html">Скачать вакансии</a>'
-    return HttpResponse(out)
+    titles = ['Basilica', 'CIMDN', 'Nazareth_village']
+    c = {'titles': titles}
+    return render(request, 'index.html', c)
 
 
-def vac_list(request):
-    my_file = open('/home/allexeyv/projects/hh.ru/job.html','rb').read()
-    #my_file = open('/home/ccninfo/Documents/projects/hh.ru/job.html','rb').read()
-    return HttpResponse(my_file, content_type = "text/html")
+def pages(request, key):
+    #titles = ['Basilica', 'CIMDN', 'Nazareth_village']
+    c = {'titles': key}
+    return render(request, 'pages.html', c)
