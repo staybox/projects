@@ -8,6 +8,7 @@ class Attractions(models.Model):
     tripadvisor = models.URLField(blank=True)
     google_map = models.URLField(blank=True)
     web_site = models.URLField(blank=True)
+    image = models.ImageField(blank=True, default='no_image.png')
 
     def publish(self):
         self.save()

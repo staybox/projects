@@ -4,8 +4,8 @@ from .models import Attractions
 
 
 def index(request):
-    titles = ['Basilica', 'CIMDN', 'Nazareth_village', 'Mount_Tabor']
-    c = {'titles': titles}
+    data = Attractions.objects.all()
+    c = {'data': data}
     return render(request, 'index.html', c)
 
 

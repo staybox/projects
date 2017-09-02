@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <h2><a href="/">MAIN PAGE</a></h2>
 {% for atr in data %}
 <h1>{{ atr.name }}</h1>
-<div class="square"></div>
+<img src= "static{{atr.image.url}}" class="square" >
 <div class="map"></div>
 <p>
 {{ atr.text }}
@@ -19,4 +18,5 @@
 
 
 {% endfor %}
+
 {% endblock %}
