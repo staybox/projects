@@ -1,0 +1,41 @@
+h1 {
+    color: white;
+    background-color: #ff9400;
+    padding: 20px 20px 20px 20px;
+    margin-right: 20px
+}
+a {
+color: black;
+text-decoration:none;
+}
+
+body {
+    padding-left: 15px;
+    font-family: 'Arial';
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
+
+.link{
+    text-decoration: underline;
+    }
+
+.square {
+  float: left;
+  width: 150px;
+  height: 150px;
+  background: brown;
+  margin: 0px 30px 10px 0px;
+}
+
+.map {
+  float: left;
+  width: 150px;
+  height: 150px;
+  background: green;
+  margin: 0px 30px 10px 0px;
+}
+
+p {
+margin-right: 200;
+}

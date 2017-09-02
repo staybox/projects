@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2><a href="/">MAIN PAGE</a></h2>
+{% for atr in data %}
+<h1>{{ atr.name }}</h1>
+<div class="square"></div>
+<div class="map"></div>
+<p>
+{{ atr.text }}
+</p>
+<p>
+<a href= "{{ atr.wikipedia }}" class="link">Wikipedia</a> |
+<a href="{{ atr.tripadvisor }}" class="link">TripAdvisor</a> |
+<a href="{{ atr.googlemap }}" class="link">Google Maps</a> |
+<a href="{{ atr.website }}" class="link">Web Site</a>
+</p>
+
+
+{% endfor %}
+{% endblock %}
