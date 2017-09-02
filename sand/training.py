@@ -5,6 +5,7 @@ from __future__ import print_function
 когда не нужно изменять функцию, используем декораторы
 """
 
+
 def make_bold(fn):
     def wrapped():
         return '<b>' + fn() + '</b>'
