@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block search_form %}
+
+    <form action='/search/' method='get'>
+    <input type='text' name='q'>
+    <input type='submit' value='Search'>
+    </form>
+        {% block content %}
+        {% endblock %}
+
+    {# print search request if it exists #}
+    {% if search %}
+    <h3> By your request '{{ search }}' we found: </h3>
+    {% endif %}
+{% endblock %}
+

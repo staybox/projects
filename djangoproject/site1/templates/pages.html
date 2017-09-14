@@ -1,22 +1,30 @@
-{% extends 'base.html' %}
+{% extends 'search_form.html' %}
+
 {% block content %}
 
-<h2><a href="/">MAIN PAGE</a></h2>
-{% for atr in data %}
-<h1>{{ atr.name }}</h1>
-<img src= "static{{atr.image.url}}" class="square" >
-<div class="map"></div>
-<p>
-{{ atr.text }}
-</p>
-<p>
-<a href= "{{ atr.wikipedia }}" class="link">Wikipedia</a> |
-<a href="{{ atr.tripadvisor }}" class="link">TripAdvisor</a> |
-<a href="{{ atr.googlemap }}" class="link">Google Maps</a> |
-<a href="{{ atr.website }}" class="link">Web Site</a>
-</p>
+    {% for atr in data %}
+    <h1>{{ atr.name }}</h1>
+    <img src= "static{{atr.image.url}}" class="square" >
+    <div class="map"></div>
+    <p>
+    {{ atr.text }}
+    </p>
+    <p>
+    <a href= "{{ atr.wikipedia }}" class="link">Wikipedia</a> |
+    <a href="{{ atr.tripadvisor }}" class="link">TripAdvisor</a> |
+    <a href="{{ atr.google_map }}" class="link">Google Maps</a> |
+    <a href="{{ atr.website }}" class="link">Web Site</a>
+    </p>
 
 
+    {% endfor %}
+<br><br><br><br><br>
+<div>
+{% for i in all %}
+    <a class="sub_titles" href='pages/{{i}}'>{{i}}</a>
 {% endfor %}
-
+</div>
 {% endblock %}
+
+
+

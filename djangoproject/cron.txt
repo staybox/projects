@@ -1,1 +1,0 @@
-0 5 * * * python /home/allexeyv/projects/hh.ru/api.py >> /var/log/allexeyv.pythonanywhere.com.server.log 2>&1
