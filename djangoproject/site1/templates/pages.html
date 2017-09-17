@@ -1,10 +1,10 @@
 {% extends 'search_form.html' %}
-
+{% load staticfiles %}
 {% block content %}
 
     {% for atr in data %}
     <h1>{{ atr.name }}</h1>
-    <img src= "static{{atr.image.url}}" class="square" >
+    <img src= "{% static atr.image.url %}" class="square" >
     <div class="map"></div>
     <p>
     {{ atr.text }}

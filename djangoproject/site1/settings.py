@@ -54,7 +54,7 @@ ROOT_URLCONF = 'site1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/ccninfo/Documents/projects/djangoproject/site1/templates/'],
+        'DIRS': [BASE_DIR, '/site1/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,6 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'site1/static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'site1/static') #The absolute path to the directory where collectstatic will collect static files for deployment.
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
