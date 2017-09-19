@@ -3,9 +3,20 @@
 {% block content %}
 
     {% for atr in data %}
-    <h1>{{ atr.name }}</h1>
+
+<div class="orange_ribbon">
+    <div class="top_text"> {{ atr.name }} </div>
+
+    <div class="icon-cart" style="float: right">
+        <div class="cart-line-1" style="background-color: white"></div>
+        <div class="cart-line-2" style="background-color: white"></div>
+        <div class="cart-line-3" style="background-color: white"></div>
+        <div class="cart-wheel" style="background-color: white"></div>
+      </div>
+</div>
+
     <img src= "{% static atr.image.url %}" class="square" >
-    <div class="map"></div>
+    <img src= "{% static atr.image_map.url %}" class="square" >
     <p>
     {{ atr.text }}
     </p>
@@ -18,7 +29,18 @@
 
 
     {% endfor %}
-<br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br>
+
+    {% if error %}
+    <p style='color: red;'>Enter the search request under 20 symbols</p>
+    {% endif %}
+
+    {# print search request if it exists #}
+    {% if search %}
+    <h3> By your request '{{ search }}' we found: </h3>
+    <br>
+    {% endif %}
+
 <div>
 {% for i in all %}
     <a class="sub_titles" href='pages/{{i}}'>{{i}}</a>

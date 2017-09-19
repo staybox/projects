@@ -10,6 +10,7 @@ class Attractions(models.Model):
     web_site = models.URLField(blank=True)
     town = models.CharField(max_length=30, blank=True, default='')
     image = models.ImageField(blank=True, default='no_image.png')
+    image_map = models.ImageField(blank=True, default='no_image.png')
 
     def publish(self):
         self.save()
@@ -28,6 +29,7 @@ class Towns(models.Model):
     tripadvisor = models.URLField(blank=True)
     google_map = models.URLField(blank=True)
     image = models.ImageField(blank=True, default='no_image.png')
+    image_map = models.ImageField(blank=True, default='no_image.png')
 
     def publish(self):
         self.save()

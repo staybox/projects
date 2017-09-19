@@ -1,8 +1,21 @@
-h1 {
+.top_text {
     color: white;
+    font-size: 26pt;
+    font-weight: 700;
+    font-family: Verdana;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    float:left;
+
+}
+
+.orange_ribbon {
     background-color: #ff9400;
-    padding: 20px 20px 20px 20px;
-    margin-right: 20px
+    overflow: hidden;
+    padding: 30px 20px 0px 20px;
+    margin: 20px 0px 20px 0px;
+
 }
 
 .sub_titles {
@@ -31,8 +44,8 @@ body {
 
 .square {
   float: left;
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   background: brown;
   margin: 0px 30px 10px 0px;
 }
@@ -48,3 +61,4 @@ body {
 p {
 margin-right: 200;
 }
+
