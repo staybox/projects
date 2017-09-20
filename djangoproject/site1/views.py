@@ -30,3 +30,13 @@ def pages(request, name):
     data = Attractions.objects.filter(name=name)
     c = {'data': data}
     return render(request, 'pages.html', c)
+
+
+def my_cart(request):
+    return render(request, 'my_cart.html')
+
+
+def add_to_cart(request):
+    data = Attractions.objects.filter(name=name)
+    c = {'data': data}
+    return render(request, 'pages.html', c)

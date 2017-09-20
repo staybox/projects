@@ -5,6 +5,7 @@
   overflow: hidden;
   margin-left: 25px;
   margin-bottom: 25px;
+
 }
 
 .icon-cart .cart-line-1 {
@@ -17,7 +18,6 @@
   -moz-transform: rotate(5deg);
   -ms-transform: rotate(5deg);
   transform: rotate(5deg);
-  background-color: #000;
   border-bottom-left-radius: 35%;
 }
 
@@ -31,7 +31,6 @@
   -moz-transform: rotate(80deg);
   -ms-transform: rotate(80deg);
   transform: rotate(80deg);
-  background-color: #000;
 }
 
 .icon-cart .cart-line-2:before {
@@ -70,7 +69,6 @@
   position: absolute;
   left: 33%;
   top: 45%;
-  background-color: #000;
 }
 
 .icon-cart .cart-line-3:after {

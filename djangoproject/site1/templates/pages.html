@@ -6,14 +6,16 @@
 
 <div class="orange_ribbon">
     <div class="top_text"> {{ atr.name }} </div>
-
+<a href= "/my_cart/" >
     <div class="icon-cart" style="float: right">
         <div class="cart-line-1" style="background-color: white"></div>
         <div class="cart-line-2" style="background-color: white"></div>
         <div class="cart-line-3" style="background-color: white"></div>
         <div class="cart-wheel" style="background-color: white"></div>
       </div>
+</a>
 </div>
+
 
     <img src= "{% static atr.image.url %}" class="square" >
     <img src= "{% static atr.image_map.url %}" class="square" >
@@ -26,6 +28,8 @@
     <a href="{{ atr.google_map }}" class="link">Google Maps</a> |
     <a href="{{ atr.website }}" class="link">Web Site</a>
     </p>
+<br><br><br><br><br><br><br><br><br><br>
+<div><a href= "/add_to_cart/" class="link">ADD TOUR TO CART</a></div>
 
 
     {% endfor %}
