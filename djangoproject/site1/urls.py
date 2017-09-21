@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^search/$', views.search, name='search'),
     url(r'^pages/(.+)$', views.pages, name='pages'),
     url(r'^my_cart/$', views.my_cart),
-    url(r'^add_to_cart/$', views.add_to_cart),
+    url(r'^add_to_cart/(.+)$', views.add_to_cart),
     url(r'^$', views.index, name='index'),
 ]

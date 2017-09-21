@@ -1,5 +1,5 @@
 # coding: utf8
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Attractions, Towns
 from django.http import HttpResponse
 
@@ -33,10 +33,11 @@ def pages(request, name):
 
 
 def my_cart(request):
-    return render(request, 'my_cart.html')
+    c = {'cart_list': request.session['cart']}
+    return render(request, 'my_cart.html', c)
 
 
-def add_to_cart(request):
-    data = Attractions.objects.filter(name=name)
-    c = {'data': data}
-    return render(request, 'pages.html', c)
+def add_to_cart(request, name):
+    request.session.set_expiry(60)
+    request.session['cart'] = name
+    return redirect('/')
