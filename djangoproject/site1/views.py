@@ -33,11 +33,22 @@ def pages(request, name):
 
 
 def my_cart(request):
-    c = {'cart_list': request.session['cart']}
+    d = request.session
+    a = []
+    for k,v in d.items():
+        if '_session_expiry' not in k:
+            a.append(k)
+    c = {'cart_list': a}
     return render(request, 'my_cart.html', c)
 
 
 def add_to_cart(request, name):
     request.session.set_expiry(60)
-    request.session['cart'] = name
-    return redirect('/')
+    request.session[name] = 1
+    data = Attractions.objects.filter(name=name)
+    c = {'data': data}
+    return render(request, 'pages.html', c)
+
+
+def order(request):
+    return render(request, 'congrats.html')

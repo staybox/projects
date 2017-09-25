@@ -9,7 +9,11 @@
 <div>You added to the cart thoose things:</div>
 
 
-<h3> {{ cart_list }}</h3>
+{% for k in cart_list %}
+    <h3> {{ k }}</h3>
+{% endfor %}
     <br>
+
+<div><a href= "/order/" class="order">ORDER THE TOUR</a></div>
 
 {% endblock %}

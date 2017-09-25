@@ -29,11 +29,13 @@
     <a href="{{ atr.website }}" class="link">Web Site</a>
     </p>
 <br><br><br><br><br><br><br><br><br><br>
-<div><a href= "/add_to_cart/{{ atr.name }}" class="link">ADD TOUR TO CART</a></div>
 
+{% if atr.name != 'Nazareth' %}
+<div><a href= "/add_to_cart/{{ atr.name }}" class="link">ADD TOUR TO CART</a></div>
+{% endif %}
 
     {% endfor %}
-<br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br>
 
     {% if error %}
     <p style='color: red;'>Enter the search request under 20 symbols</p>
