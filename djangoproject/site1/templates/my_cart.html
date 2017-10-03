@@ -14,6 +14,15 @@
 {% endfor %}
     <br>
 
-<div><a href= "/order/" class="order">ORDER THE TOUR</a></div>
+    <form action='/order/' method='post'> {% csrf_token %}
+    client_name<br>
+    <input type='text' name='client_name'><br><br>
+    phone_number<br>
+    <input type='text' name='phone_number'><br><br>
+    cart_list<br>
+    <input type='text' name='cart_list' value={{a_str}}><br><br>
+    <input type='submit' value='ORDER THE TOUR'>
+    </form>
+
 
 {% endblock %}

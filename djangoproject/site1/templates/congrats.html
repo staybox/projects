@@ -1,4 +1,24 @@
 {% extends 'base.html' %}
 {% block congrats %}
-Congrats!
+{%if data1%}
+<div>Congrats! </div>
+<div>Your order data is:</div>
+<br>
+{%for i in data1%}
+<div> {{i}} </div>
+{% endfor %}
+<br>
+<div> We will call you in 24 hours to confirm your request! </div>
+{%endif%}
+
+{%if errors%}
+<div>Something is wrong! </div>
+<br>
+{%for i in errors%}
+<div> {{i}} </div>
+{% endfor %}
+<br>
+<div> Check please your date and try again. </div>
+{%endif%}
+
 {% endblock %}

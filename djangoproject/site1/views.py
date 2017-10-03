@@ -1,19 +1,21 @@
 # coding: utf8
 from django.shortcuts import render, redirect
-from .models import Attractions, Towns
+from .models import Attractions, Towns, Orders
 from django.http import HttpResponse
+from django.template import RequestContext
+from .forms import ContactForm
 
 
 def index(request):
-    all = Attractions.objects.filter(town='Nazareth') # all attractions in Nazareth
-    naz = Towns.objects.filter(name='Nazareth') # only Nazareth
+    all = Attractions.objects.filter(town='Nazareth')  # all attractions in Nazareth
+    naz = Towns.objects.filter(name='Nazareth')  # only Nazareth
     c = {'data': naz, 'all': all}
     return render(request, 'pages.html', c)
 
 
 def search(request):
-    all = Attractions.objects.filter(town='Nazareth') # all attractions in Nazareth
-    naz = Towns.objects.filter(name='Nazareth') # only Nazareth
+    all = Attractions.objects.filter(town='Nazareth')  # all attractions in Nazareth
+    naz = Towns.objects.filter(name='Nazareth')  # only Nazareth
     if 'q' in request.GET:
         r = request.GET['q']
         if r == '' or len(r) > 20:
@@ -35,10 +37,11 @@ def pages(request, name):
 def my_cart(request):
     d = request.session
     a = []
-    for k,v in d.items():
+    for k, v in d.items():
         if '_session_expiry' not in k:
             a.append(k)
-    c = {'cart_list': a}
+    a_str = ','.join(a)
+    c = {'cart_list': a, 'a_str': a_str}
     return render(request, 'my_cart.html', c)
 
 
@@ -51,4 +54,17 @@ def add_to_cart(request, name):
 
 
 def order(request):
-    return render(request, 'congrats.html')
+    p = request.POST
+    client_name = p['client_name']
+    phone_number = p['phone_number']
+    cart_list = p['cart_list']
+    s = ContactForm({'client_name':client_name, 'phone_number':phone_number, 'order':cart_list})
+    if s.is_valid():
+        d = Orders(client_name=client_name, phone_number=phone_number, order=cart_list)
+        d.save()
+        data1 = [client_name, phone_number, cart_list]
+        c = {'data1': data1}
+    else:
+        data1 = [s.errors]
+        c = {'errors': data1}
+    return render(request, 'congrats.html', c)
