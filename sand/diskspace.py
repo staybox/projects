@@ -4,23 +4,19 @@ import argparse
 
 
 def find_sizes(args):
-  logicaldisk = args.logicaldisk
-  partition = args.partition
+  disk = args.disk
   platf = sys.platform
-  cmd = ''
   if 'linux' in platf:
-      if logicaldisk != '':
+      if disk == '':
           cmd = 'lsblk -d -io KNAME,SIZE -e 1,11'
-      elif partition != '':
-          cmd = 'lsblk -io KNAME,SIZE -e 1,11 | grep -E "^sda[[:digit:]].|KNAME"'
+      else:
+          cmd = 'lsblk -io KNAME,SIZE -e 1,11 | grep -E "^{0}[[:digit:]].|KNAME"'.format(disk)
 
   elif 'win' in platf:
-      if logicaldisk != '':
-          cmd = 'wmic logicaldisk get size,name'
-      elif partition != '':
-          cmd = 'wmic partition get size,name'
+      if disk == '':
+          cmd = 'wmic diskdrive get size,index'
       else:
-          raise Exception('choose please one of the parameteres: --logicaldisk=1 or --partition=1')
+          cmd = 'wmic partition where DiskIndex={0} get index,size'.format(disk)
   result = []
   process = subprocess.Popen(cmd,
                                shell=True,
@@ -37,7 +33,6 @@ def find_sizes(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--partition', required=False, default='', help='to see partition sizes')
-    parser.add_argument('--logicaldisk', required=False, default='', help='to see logicaldisk sizes')
+    parser.add_argument('--disk', required=False, default='')
     args = parser.parse_args()
-    find_sizes(args)
+find_sizes(args)
