@@ -1,26 +1,43 @@
 import sys
 import subprocess
 import argparse
-import ctypes
 
 
-def abc(args):
-  a = args.size
+def find_sizes(args):
+  logicaldisks = args.logicaldisks
+  partitions = args.partitions
   platf = sys.platform
-  print platf
+  cmd = ''
   if 'linux' in platf:
-      if a != '':
-        cmd = 'lsblk -io KNAME,SIZE'
+      if logicaldisks != '':
+          cmd = 'lsblk -io --bytes KNAME,SIZE'
+      elif partitions != '':
+          cmd = 'lsblk -io --bytes KNAME,SIZE'
+      #subprocess.call(cmd, shell=True)
+  elif 'win' in platf:
+      if logicaldisks != '':
+          cmd = 'wmic logicaldisk get size,name'
+      elif partitions != '':
+          cmd = 'wmic partition get size,name'
       else:
-        cmd = 'lsblk -io KNAME'
-      subprocess.call(cmd, shell=True)
-  elif 'Windows' in platf:
-        free_bytes = ctypes.c_ulonglong(0)
-        ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p(dirname), None, None, ctypes.pointer(free_bytes))
-        return free_bytes.value / 1024 / 1024
+          raise Exception('choose please one of the parameteres: --logicaldisks=1 or --partitions=1')
+      result = []
+      process = subprocess.Popen(cmd,
+                               shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+      for line in process.stdout:
+          result.append(line)
+      errcode = process.returncode
+      for line in result:
+          print(line)
+      if errcode is not None:
+          raise Exception('cmd %s failed, see above for details', cmd)
+      
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--size', required=False, default='', help='to see a disk sizes')
+    parser.add_argument('--partitions', required=False, default='', help='to see partitions sizes')
+    parser.add_argument('--logicaldisks', required=False, default='', help='to see logicaldisks sizes')
     args = parser.parse_args()
-    abc(args)
+    find_sizes(args)
