@@ -57,7 +57,6 @@ class Disk(Volume):
                     cmd = "lsblk -io KNAME,SIZE,TYPE -e 1,11 --byte | grep '^{0}[[:digit:]]'".format(disk_id)
                 else:
                     cmd = 'wmic partition where DiskIndex={0} get index,size'.format(disk_id)
-        print cmd
         if cmd == '':
                 raise Exception('Invalid disk_number (--disk={0})'.format(disk_number))
         disk_list = self.find_size(cmd)
