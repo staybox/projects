@@ -3,6 +3,12 @@ import subprocess
 import argparse
 import re
 
+"""
+Launch from Windows:
+diskspace.py or diskspace.py --disk=0
+Launch from Linux:
+python diskspace.py or python diskspace.py --disk=0
+"""
 
 class Volume(object):
     def find_size(self, cmd):
@@ -15,7 +21,7 @@ class Volume(object):
         for line in process.stdout:
             size = re.search('\d{3,}', line) #more than 3 digits in the string
             if size is not None and 'Size' not in line:
-                index = re.search('^\S{1,2}', line)  # non spaces from the beginning
+                index = re.search('^\S{1,4}', line)  # non spaces from the beginning
                 index = index.group(0)
                 size = round(float(size.group(0))/(1024**3), 1)
                 disk_list.update({number: [index, size]})
@@ -30,7 +36,7 @@ class System(Volume):
 
     def find_disk_size(self, platform):
         if 'linux' in platform:
-            cmd = 'lsblk -d -io KNAME,SIZE -e 1,11'
+            cmd = 'lsblk -d -io KNAME,SIZE -e 1,11 --byte'
         else:
             cmd = 'wmic diskdrive get index,size'
         disk_list = self.find_size(cmd)
@@ -43,13 +49,15 @@ class Disk(Volume):
         disk_number = int(disk_number)
         cmd = ''
         #res = {0: ['1', 55.9], 1: ['0', 29.1]}
+        #res = {0: ['sda', 12.0]}
         for k, v in res.items():
             if k == disk_number:
                 disk_id = v[0]
                 if 'linux' in platf:
-                    cmd = 'lsblk -io KNAME,SIZE -e 1,11 | grep -E "^{0}[[:digit:]].|KNAME"'.format(disk_id)
+                    cmd = "lsblk -io KNAME,SIZE,TYPE -e 1,11 --byte | grep '^{0}[[:digit:]]'".format(disk_id)
                 else:
                     cmd = 'wmic partition where DiskIndex={0} get index,size'.format(disk_id)
+        print cmd
         if cmd == '':
                 raise Exception('Invalid disk_number (--disk={0})'.format(disk_number))
         disk_list = self.find_size(cmd)
